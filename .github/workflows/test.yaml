@@ -18,9 +18,9 @@
 name: Python test
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 concurrency:
   group: ${{ github.repository }}-${{ github.head_ref || github.sha }}-${{ github.workflow }}
@@ -73,6 +73,11 @@ jobs:
         with:
           command: clippy
           args: --all-targets --all-features -- -D clippy::all
+
+      - name: Override requirements.txt
+        if: ${{ matrix.python-version == '3.10' }}
+        run: |
+          mv requirements-py37.txt requirements.txt
 
       - name: Create Virtualenv
         run: |
